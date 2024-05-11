@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kibana-https
+  namespace: elastic
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`kibana.krunching.de`)
+      kind: Rule
+      services:
+        - name: kibana-kb-http
+          port: 5601
+  tls:
+    certResolver: myresolver
