@@ -112,6 +112,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
 
 5. Add Helm Repos
     ```
+    # Add helm repos
     cd helm
     ./helmRepos.sh
     ```
