@@ -17,8 +17,8 @@ Make sure you have sufficent storage on your proxmox cluster. Best use thin-prov
     - git installed
     - ssh-key added to agent (ssh-add)
     - proxmox server (https://www.proxmox.com/en/proxmox-virtual-environment/get-started)
-    Optional:
-    - personal domain on the internet, otherwise you have to use kubectl port-forward to access the traefik dashboard and kibana
+    
+    - Optional: personal domain on the internet, otherwise you have to use kubectl port-forward to access the traefik dashboard and kibana
     
 
 1. Setup files and folders
