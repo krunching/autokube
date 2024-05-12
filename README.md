@@ -24,7 +24,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     brew install git
     ```
-    - ssh-key added to agent
+    - Ssh-key added to agent
     ```
     ssh-add
     ```
