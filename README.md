@@ -194,7 +194,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     cd elastic
     kubectl create -f metricbeat_hosts.yaml -n elastic
     ```
-    - cluster with 1 elasticsearch node and a 50GB volume plus metricbeat containers is created 
+    - cluster with 1 elasticsearch node and a 50GB volume plus kibana and metricbeat containers is created 
     - if you want to expose the kibana dashboard create dns entry for kibana.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
     - edit kibanaIngressroute.yaml to point to your domain
     ```
