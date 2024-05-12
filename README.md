@@ -205,7 +205,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Create kibana ingressroute
     ```
     kubectl create -f kibanaIngressroute.yaml
-        ```
+    ```
     - Obtain elastic user password
     ```
     (kubectl get -n elastic secret elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'); echo
