@@ -3,6 +3,7 @@
 # Change Parameters matching your environment 
 STORAGE="external-lvm"
 SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOhdd4M03kGHIoHsYOL/htqHnCQ67gQ8bMGil9rupLrn malte.krause@krunching.de"
+TF_USERPASS="terraform"
 
 set -x
 wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
@@ -39,5 +40,7 @@ qm template 9000
 # Prepare terraform role and user
 # Edit <password>
 pveum role add terraformProv -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.Audit VM.PowerMgmt Datastore.AllocateSpace Datastore.Audit"
-pveum user add terraform-prov@pve --password <password>
+pveum user add terraform-prov@pve --password $TF_USERPASS
 pveum aclmod / -user terraform-prov@pve -role terraformProv
+
+# Taken from https://4sysops.com/archives/clone-proxmox-vms-with-terraform/

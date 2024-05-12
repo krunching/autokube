@@ -38,6 +38,10 @@ variable "worker_count" {
   type = number
 }
 
+variable "storage_size" {
+  type = number
+}
+
 resource "proxmox_vm_qemu" "kubemaster" {
   count = var.master_count
   name = "kubemaster-${count.index + 1}"
@@ -133,7 +137,7 @@ disks {
       scsi1 {
           disk {
             storage = "external-lvm"
-            size = 250
+            size = var.storage_size
             emulatessd = true
             iothread = false
             discard = true

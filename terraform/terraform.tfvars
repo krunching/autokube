@@ -6,3 +6,4 @@ proxmox_node = "pve"
 ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOhdd4M03kGHIoHsYOL/htqHnCQ67gQ8bMGil9rupLrn malte.krause@krunching.de"
 master_count = 1
 worker_count = 3
+storage_size = 250
