@@ -14,7 +14,7 @@ Make sure you have sufficent storage on your proxmox cluster. Best use thin-prov
 
 Always start in autokube directory.
 
-Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be resetted through the proxmox gui. The deploment automatically continues when the machine is up again. 
+Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be resetted through the proxmox gui. The deployment automatically continues when the machine is up again. 
 
 ---
 
