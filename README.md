@@ -6,6 +6,8 @@ feat. Flannel Networking,
       OpenEBS ZFS Local PV Storage,
       Elastic Cluster
 
+Provisoned using Terraform and Ansible.
+
 You can experiment with different storage solutions, as requirements for rook, longhorn or mayastor are met. Just deploy a different storage solution through helm in step 6. Basic manifests and and values are provided.
 
 Make sure you have sufficent storage on your proxmox cluster. Best use thin-provisioned datastore.
