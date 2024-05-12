@@ -12,6 +12,8 @@ Make sure you have sufficent storage on your proxmox cluster. Best use thin-prov
 
 Always start in autokube directory.
 
+Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be resetted through the proxmox gui. The deploment automatically continues when the machine is up again. 
+
 ---
 
 0. Prerequisites:
@@ -187,7 +189,7 @@ Always start in autokube directory.
     ```
     - optionally edit file metricbeat_hosts (adapted from https://github.com/elastic/cloud-on-k8s/tree/main/config/recipes/beats)
     ```
-    # Deploy elastic cluster with merticbeat
+    # Deploy elastic cluster with metricbeat
     cd elastic
     kubectl create -f metricbeat_hosts.yaml -n elastic
     ```
