@@ -156,6 +156,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
 
 8. Install traefik
     - Customize values.yaml to your needs, especially the static config part for your acme resolver (starting line 575) and the dashboard ingressroute (starting line 157)
+    - If you do not expose to the internet, change static config and add dashboard setting api.insecure to access with kubectl port-forward later
     - Install traefik with custom values
     ```
     cd traefik
@@ -168,8 +169,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Enable port forwarding for ports tcp 80 and tcp 443 to loadbalancer external ip in your router
     - If you want to expose the traefik dashboard create dns entry for traefik.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
     - Dashboard credentials are admin tr@efikd@sh
-    Optional:
-    - create your own dashboard credentials
+    - Optionally create your own dashboard credentials
     ```
     htpasswd -nb user password | openssl base64
     ```
@@ -184,6 +184,10 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     data:
       users: <your_token_here>    
     EOF
+    ```
+    - If you did not expose the traefik dashboard to the internet, use kubernetes port forwarding and access dashboard at http://127.0.0.1:8080/dashboard/
+    ```
+    kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080
     ```
     
 9. Install elastic
@@ -213,4 +217,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     (kubectl get -n elastic secret elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'); echo
     ```
     - Log in to kibana with these credentials
+    - If you do not own a domain and did not setup external access, use kubernetes port forwarding and access kibana via https://127.0.0.1:5601
+    ```
+    kubectl port-forward service/kibana-kb-http 5601 -n elastic
+    ```
     
