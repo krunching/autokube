@@ -60,6 +60,8 @@ Make sure you have sufficent storage on your proxmox cluster. Best use thin-prov
 6. Install openebs
     - "helm install openebs --namespace openebs openebs/openebs --set engines.replicated.mayastor.enabled=false --create-namespace"
     - create storageclass ("kubectl create -f zfsSC.yaml")
+    - if you want to bechmark your storage apply dbench.yaml ("kubectl create -f dbench.yaml") and follow the tests ("kubectl logs -f job/dbench")
+    - clean up dbench ("kubectl delete -f dbench.yaml")
 
 7. Install metallb
     - "helm install metallb metallb/metallb -n metallb-system --create-namespace"
