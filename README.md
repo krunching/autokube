@@ -1,5 +1,5 @@
 # autokube
-## Automated Homelab Kubernetes Cluster running on Proxmox
+## Automated Homelab Kubernetes Cluster running on Proxmox with Ubuntu Server 24.04 LTS Nodes
 feat. Flannel Networking,
       Traefik Ingress Controller,
       Metallb Load Balancer,
@@ -20,35 +20,33 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - macos client with homebrew (https://brew.sh)
     - git installed
     ```
-    # Install git
     brew install git
     ```
     - ssh-key added to agent
     ```
-    #Add ssh key to session
     ssh-add
     ```
     - proxmox server (https://www.proxmox.com/en/proxmox-virtual-environment/get-started)    
     - personal domain on the internet, otherwise you have to use kubectl port-forward to access the traefik dashboard and kibana
 
 1. Setup files and folders
+    - Clone this repository
     ```
-    # Clone this repository
     git clone https://github.com/krunching/autokube.git
     ```
+    - Enter autokube directory
     ```
-    # Enter autokube directory
     cd autokube
     ```
+    - Install dependencies
     ```
-    # Install dependencies
     cd brew
     ./brewPrerequisites.sh
     ```
 
 2. Create VM template in Proxmox and setup terraform role and user
+    - Enter proxmox directory
     ```
-    # Enter proxmox directory
     cd proxmox
     ```
     - change variables in ubuntu-2404-cloudinit.sh according to your proxmox environment
@@ -68,142 +66,149 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - change vm specs according to your needs
     - ansible playbooks get called by the terraform process and setup the cluster
     - the playbooks start when the vms are deployed and the hosts file gets written to the ansible directory by terraform
+    - Enter terraform directory
     ```
-    # Enter terrform directory
     cd terraform
     ```
+    - Initialize terraform
     ```
-    # Initialize teraform
     terraform init
     ```
+    - Plan deployment
     ```
-    # Plan deployment
     terraform plan
     ```
+    - Deploy
     ```
-    # Deploy
     terraform apply
     ```
     Optional:
-    ```
-    # Delete resources
-    terraform destroy
-    ```
+     - Delete resources
+       ```
+       terraform destroy
+       ```
 
 4. Prepare your client to interact with the Kubernetes Cluster
     - use scp to copy the config file from kubernetes master to folder .kube in your home directory
     ```
-    # Get kube config
     cd ~
     scp ubuntu@kubemaster-1:~/.kube/config ~/.kube/
     ```
+    - Fix permissions on config file
     ```
-    # fix permissions on config file
-    chmod go-r  ~/.kube/config
+    chmod go-r ~/.kube/config
     ```
+    - Check cluster status
     ```
-    # Check cluster status
     kubectl get nodes
     ```
+    - Watch pods
     ```
-    # Watch pods
     watch kubectl get pods -o wide -A
     ```
 
 5. Add Helm Repos
     ```
-    # Add helm repos
     cd helm
     ./helmRepos.sh
     ```
 
 6. Install openebs
     ```
-    # Install openebs wihout mayastor
     helm install openebs --namespace openebs openebs/openebs --set engines.replicated.mayastor.enabled=false --create-namespace
     ```
+    - Create storageclass openebs-zfspv
     ```
-    # Create storageclass openebs-zfspv
     cd openebs
     kubectl create -f zfsSC.yaml
     ```
     Optional:
+    - Benchmark your storage with dbench
     ```
-    # Benchmark your storage with dbench
     cd openebs
     kubectl create -f dbench.yaml
     ```
+    - Follow the dbench logs
     ```
-    # Follow the debench logs
     kubectl logs -f job/dbench
     ```
+    - Clean up dbench
     ```
-    # Clean up dbench
     cd openebs
     kubectl delete -f dbench.yaml
     ```
 
 7. Install metallb
     ```
-    # Install metallb
     helm install metallb metallb/metallb -n metallb-system --create-namespace
     ```
-    - edit the pool.yaml to your network addresses
+    - edit the pool.yaml to your network addresses and create ip pool
     ```
-    # Create metallb ip-pool
     cd metallb
     kubectl create -f pool.yaml
     ```
+    - Create layer 2 advertisment
     ```
-    # Create layer 2 advertisment
     kubectl create -f L2Advertisement.yaml
     ```
 
 8. Install traefik
-    - customize values.yaml to your needs, especially the static config part for your acme resolver (starting line 575) and the dashboard ingressroute (starting line 157)
+    - Customize values.yaml to your needs, especially the static config part for your acme resolver (starting line 575) and the dashboard ingressroute (starting line 157)
+    - Install traefik with custom values
     ```
-    # Install traefik with custom values
     cd traefik
     helm install traefik traefik/traefik -f values.yaml -n traefik --create-namespace
     ```
+    - check loadbalancer external ip
     ```
-    # Check loadbalancer external ip
     kubectl get svc -n traefik
     ```
-    - enable port forwarding for ports tcp 80 and tcp 443 to this ip in your router
-    - if you want to expose the traefik dashboard create dns entry for traefik.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
-    - dashboard credentials are admin tr@efikd@sh
+    - Enable port forwarding for ports tcp 80 and tcp 443 to loadbalancer external ip in your router
+    - If you want to expose the traefik dashboard create dns entry for traefik.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
+    - Dashboard credentials are admin tr@efikd@sh
+    Optional:
+    - create your own dashboard credentials
     ```
-    # Create your own dashboard credentials
     htpasswd -nb user password | openssl base64
     ```
-    - apply new credentials to secret
-
-9. Install elastic
+    - Apply the secret
     ```
-    # Install eck operator
+    cat <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: traefik-dashboard-auth-secret
+      namespace: traefik
+    data:
+      users: <your_token_here>    
+    EOF
+    ```
+    
+9. Install elastic
+    - Install eck operator
+    ```
     helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace
     ```
+    -  Create elastic namespace
     ```
-    # Create elastic namespace
     kubectl create ns elastic
     ```
     - optionally edit file metricbeat_hosts (adapted from https://github.com/elastic/cloud-on-k8s/tree/main/config/recipes/beats)
+    - Deploy elastic cluster with metricbeat
     ```
-    # Deploy elastic cluster with metricbeat
     cd elastic
     kubectl create -f metricbeat_hosts.yaml -n elastic
     ```
-    - cluster with 1 elasticsearch node and a 50GB volume plus kibana and metricbeat containers is created 
-    - if you want to expose the kibana dashboard create dns entry for kibana.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
-    - edit kibanaIngressroute.yaml to point to your domain
+    - Cluster with 1 elasticsearch node and a 50GB volume plus kibana and metricbeat containers is created 
+    - If you want to expose the kibana dashboard create dns entry for kibana.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
+    - Edit kibanaIngressroute.yaml to point to your domain
+    - Create kibana ingressroute
     ```
-    # Create kibana ingressroute
     kubectl create -f kibanaIngressroute.yaml
+        ```
+    - Obtain elastic user password
     ```
-    ```
-    # Obtain elastic user password
     (kubectl get -n elastic secret elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'); echo
     ```
-    - log in to kibana with these credentials
+    - Log in to kibana with these credentials
     
