@@ -17,8 +17,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
 ---
 
 0. Prerequisites:
-    - macos client with homebrew (https://brew.sh)
-    - git installed
+    - Macos client with homebrew (https://brew.sh)
+    - Git installed
     ```
     brew install git
     ```
@@ -26,8 +26,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     ssh-add
     ```
-    - proxmox server (https://www.proxmox.com/en/proxmox-virtual-environment/get-started)    
-    - personal domain on the internet, otherwise you have to use kubectl port-forward to access the traefik dashboard and kibana
+    - Proxmox server (https://www.proxmox.com/en/proxmox-virtual-environment/get-started)    
+    - Personal domain on the internet, otherwise you have to use kubectl port-forward to access the traefik dashboard and kibana
 
 1. Setup files and folders
     - Clone this repository
@@ -49,23 +49,23 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     cd proxmox
     ```
-    - change variables in ubuntu-2404-cloudinit.sh according to your proxmox environment
-    - use scp to copy script to home directory of root on proxmox server
-    - connect via ssh to your proxmox server and run the script
+    - Change variables in ubuntu-2404-cloudinit.sh according to your proxmox environment
+    - Use scp to copy script to home directory of root on proxmox server
+    - Connect via ssh to your proxmox server and run the script
 
    Or use Proxmox GUI and
-    - start shell-session
-    - use editor to create ubuntu-2404-cloudinit.sh and copy contents of file from repository into editor
-    - change variables according to your proxmox environment
-    - write changes and exit editor
-    - run ubuntu-2404-cloudinit.sh
+    - Start shell-session
+    - Use editor to create ubuntu-2404-cloudinit.sh and copy contents of file from repository into editor
+    - Change variables according to your proxmox environment
+    - Write changes and exit editor
+    - Run ubuntu-2404-cloudinit.sh
 
 3. Deploy the Cluster VMs with terraform and ansible
-    - create an api token through the gui for the newly created terraform-prov user
-    - change the variables in terraform-tfvars to work with your proxmox setup
-    - change vm specs according to your needs
-    - ansible playbooks get called by the terraform process and setup the cluster
-    - the playbooks start when the vms are deployed and the hosts file gets written to the ansible directory by terraform
+    - Create an api token through the gui for the newly created terraform-prov user
+    - Change the variables in terraform-tfvars to work with your proxmox setup
+    - Change vm specs according to your needs
+    - Ansible playbooks get called by the terraform process and setup the cluster
+    - The playbooks start when the vms are deployed and the hosts file gets written to the ansible directory by terraform
     - Enter terraform directory
     ```
     cd terraform
@@ -89,7 +89,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
        ```
 
 4. Prepare your client to interact with the Kubernetes Cluster
-    - use scp to copy the config file from kubernetes master to folder .kube in your home directory
+    - Use scp to copy the config file from kubernetes master to folder .kube in your home directory
     ```
     cd ~
     scp ubuntu@kubemaster-1:~/.kube/config ~/.kube/
