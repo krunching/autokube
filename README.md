@@ -76,6 +76,8 @@ Make sure you have sufficent storage on your proxmox cluster. Best use thin-prov
     - enable port forwarding for ports tcp 80 and tcp 443 to this ip in your router
     - if you want to expose the traefik dashboard create dns entry for traefik.yourdomain.xyz pointing to your wan ip (best use a dyndns service with cname)
     - dashboard credentials are admin tr@efikd@sh
+    - use "htpasswd -nb user password | openssl base64" to create your own credentials and apply changes
+
 
 9. Install elastic
     - install eck operator ("helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace")
