@@ -127,7 +127,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
 
 6. Add Helm Repos
     ```
-    cd ../helm
+    cd autokube/helm
     ./helmRepos.sh
     ```
 
