@@ -182,6 +182,10 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
 
 9. Install traefik
+    - Enter traefik directory
+    ```
+    cd ../traefik
+    ```
     - Customize values.yaml in traefik folder to your needs
     - Set your domain as matchRule for the dashboard ingressroute (starting in line 157)
     - In case you do not own a domain, disable the ingressroute by setting enabled to false
@@ -233,7 +237,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     - Install traefik with custom values
     ```
-    cd ../traefik
     helm install traefik traefik/traefik -f values.yaml -n traefik --create-namespace
     ```
     - check loadbalancer external ip
@@ -264,7 +267,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080
     ```
     
-10. Install elastic
+11. Install elastic
     - Install eck operator
     ```
     helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace
