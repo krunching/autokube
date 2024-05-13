@@ -1,5 +1,5 @@
 pm_api_url = "https://<your_proxmox_node_ip>:8006/api2/json"
-pm_api_token_id = "terraform-prov@pam!terraform"
+pm_api_token_id = "<your_terraform_token_id>"
 pm_api_token_secret = "<your_terraform_api_token>"
 cloudinit_template_name = "ubuntu-2404-ci"
 proxmox_node = "<your_proxmox_node_name>"
