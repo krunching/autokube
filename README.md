@@ -67,7 +67,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Run ubuntu-2404-cloudinit.sh
 
 3. Deploy the Cluster VMs with terraform and ansible
-    - Create an api token through the gui for the newly created terraform-prov user
+    - Add an api token through the gui for the newly created terraform-prov user
+    - Add permissions to the api token in the gui on the by selecting path /, then the api token itself and the terraformProv role
     - Enter terraform directory
     ```
     cd ../terraform
