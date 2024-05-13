@@ -54,8 +54,11 @@ resource "proxmox_vm_qemu" "kubemaster" {
   clone = var.cloudinit_template_name
 
   # basic VM settings here. agent refers to guest agent
+  tags = "cloud-init;kubemaster;noble"  
   agent = 1
+  balloon =1
   os_type = "cloud-init"
+  cicustom = "vendor=local:snippets/ubuntu.yaml"
   ipconfig0 = "ip=dhcp"
   ciuser = "ubuntu"
   ssh_user = "ubuntu"
@@ -64,7 +67,7 @@ resource "proxmox_vm_qemu" "kubemaster" {
   cpu = "x86-64-v2-AES"
   memory = 2048
   scsihw = "virtio-scsi-pci"
-  bootdisk = "scsi0"
+  #bootdisk = "scsi0"
   cloudinit_cdrom_storage = "external-lvm"
  
   disks {
@@ -108,8 +111,11 @@ resource "proxmox_vm_qemu" "kubeworker" {
   clone = var.cloudinit_template_name
 
   # basic VM settings here. agent refers to guest agent
+  tags = "cloud-init;kubeworker;noble"
   agent = 1
+  balloon = 1
   os_type = "cloud-init"
+  cicustom = "vendor=local:snippets/ubuntu.yaml"
   ipconfig0 = "ip=dhcp"
   ciuser = "ubuntu"
   ssh_user = "ubuntu"
@@ -118,7 +124,7 @@ resource "proxmox_vm_qemu" "kubeworker" {
   cpu = "x86-64-v2-AES"
   memory = 8192
   scsihw = "virtio-scsi-pci"
-  bootdisk = "scsi0"
+  #bootdisk = "scsi0"
   cloudinit_cdrom_storage = "external-lvm"
 
 disks {
