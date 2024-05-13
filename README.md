@@ -54,7 +54,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     # Change Parameters matching your environment 
     STORAGE="<your_proxmox_storage_name>"
     SSH_KEY="<your_ssh_key>"
-    TF_USERPASS="<password_for_terraform_user>"
+    TF_USERPASS="<your_password_for_terraform_user>"
     ```
     - Use scp to copy script to home directory of root on proxmox server
     - Connect via ssh to your proxmox server and run the script
