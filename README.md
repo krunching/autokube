@@ -70,7 +70,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Create an api token through the gui for the newly created terraform-prov user
     - Change the variables in terraform-tfvars to work with your proxmox setup
     ```
-    pm_api_url = "https://<your_proxmox_ip>:8006/api2/json"
+    pm_api_url = "https://<your_proxmox_node_ip>:8006/api2/json"
     pm_api_token_id = "terraform-prov@pam!terraform"
     pm_api_token_secret = "<your_terraform_api_token>"
     cloudinit_template_name = "ubuntu-2404-ci"
