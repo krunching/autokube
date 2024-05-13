@@ -206,7 +206,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
           certResolver: myresolver
     ```
     - Change the static configuration to your needs (starting in line 570)
-    - Setup acme resolver. You can test with staging server, just comment out the caserver line
+    - Setup acme resolver. You can test with staging server, just remove comment the caserver line
     - If you do not own a domain, remove comment on api.insecure to access dashboard locally with kubectl port-forward
     ```
     # Configure Traefik static configuration
