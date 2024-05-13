@@ -68,6 +68,10 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
 
 3. Deploy the Cluster VMs with terraform and ansible
     - Create an api token through the gui for the newly created terraform-prov user
+    - Enter terraform directory
+    ```
+    cd ../terraform
+    ```
     - Change the variables in terraform-tfvars to work with your proxmox setup
     ```
     pm_api_url = "https://<your_proxmox_node_ip>:8006/api2/json"
@@ -83,10 +87,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Change vm specs according to your needs
     - Ansible playbooks get called by the terraform process and setup the cluster
     - The playbooks start when the vms are deployed and the hosts file gets written to the ansible directory by terraform
-    - Enter terraform directory
-    ```
-    cd ../terraform
-    ```
     - Initialize terraform
     ```
     terraform init
