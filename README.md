@@ -12,7 +12,7 @@ You can experiment with different storage solutions, as requirements for rook, l
 
 Make sure you have sufficent storage on your proxmox cluster. Best use thin-provisioned datastore.
 
-Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be reset through the proxmox gui. The deployment automatically continues when the machine is up again. 
+Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be reset through the proxmox gui. The deployment automatically continues when the machine is up again. To debug terraform errors type "export TF_LOG=TRACE" and run terraform command. 
 
 ---
 
@@ -44,7 +44,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ./brewPrerequisites.sh
     ```
 
-2. Create VM template in Proxmox and setup terraform role and user
+2. Create VM template in Proxmox
     - Enter proxmox directory
     ```
     cd ../proxmox
@@ -65,7 +65,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Write changes and exit editor
     - Run ubuntu-2404-cloudinit.sh
 
-3. Deploy the Cluster VMs with terraform and ansible
+4. Deploy the Cluster VMs with terraform and ansible
     - Add an api token through the gui for the root user and untick privilege seperation
     - Take a note of both values token id and secret
     - Enter terraform directory
@@ -105,7 +105,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
        terraform destroy
        ```
 
-4. Prepare your client to interact with the Kubernetes Cluster
+5. Prepare your client to interact with the Kubernetes Cluster
     - Use scp to copy the config file from kubernetes master to folder .kube in your home directory
     ```
     cd ~
@@ -125,13 +125,13 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     watch kubectl get pods -o wide -A
     ```
 
-5. Add Helm Repos
+6. Add Helm Repos
     ```
-    cd ../helm
+    cd autokube/helm
     ./helmRepos.sh
     ```
 
-6. Install openebs with mayastor disabled
+7. Install openebs with mayastor disabled
     ```
     helm install openebs --namespace openebs openebs/openebs --set engines.replicated.mayastor.enabled=false --create-namespace
     ```
@@ -154,9 +154,13 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl delete -f dbench.yaml
     ```
 
-7. Install metallb
+8. Install metallb
     ```
     helm install metallb metallb/metallb -n metallb-system --create-namespace
+    ```
+    - Enter metallb directory
+    ```
+    cd ../metallb
     ```
     - edit the pool.yaml matching your network addresses and create ip pool
     ```
@@ -170,7 +174,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
        - <your_pool_start_ip>-<your_pool_end_ip>
     ```
     ```
-    cd ../metallb
     kubectl create -f pool.yaml
     ```
     - Create layer 2 advertisment
@@ -178,7 +181,11 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl create -f L2Advertisement.yaml
     ```
 
-8. Install traefik
+9. Install traefik
+    - Enter traefik directory
+    ```
+    cd ../traefik
+    ```
     - Customize values.yaml in traefik folder to your needs
     - Set your domain as matchRule for the dashboard ingressroute (starting in line 157)
     - In case you do not own a domain, disable the ingressroute by setting enabled to false
@@ -206,7 +213,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
           certResolver: myresolver
     ```
     - Change the static configuration to your needs (starting in line 570)
-    - Setup acme resolver. You can test with staging server, just remove comment the caserver line
+    - Setup acme resolver. You can test with staging server, just remove comment at the caserver line
     - If you do not own a domain, remove comment on api.insecure to access dashboard locally with kubectl port-forward
     ```
     # Configure Traefik static configuration
@@ -230,7 +237,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     - Install traefik with custom values
     ```
-    cd ../traefik
     helm install traefik traefik/traefik -f values.yaml -n traefik --create-namespace
     ```
     - check loadbalancer external ip
@@ -256,12 +262,12 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
       users: <your_token_here>    
     EOF
     ```
-    - If you did not expose the traefik dashboard to the internet, use kubernetes port forwarding and access dashboard at http://127.0.0.1:8080/dashboard/
+    - If you did not expose the traefik dashboard to the internet, use kubernetes port forwarding and access dashboard at http://127.0.0.1:9000/dashboard/
     ```
-    kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080
+    kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
     ```
     
-9. Install elastic
+11. Install elastic
     - Install eck operator
     ```
     helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace
@@ -273,7 +279,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Optionally edit file metricbeat_hosts (adapted from https://github.com/elastic/cloud-on-k8s/tree/main/config/recipes/beats)
     - Deploy elastic cluster with metricbeat
     ```
-    cd elastic
+    cd ../elastic
     kubectl create -f metricbeat_hosts.yaml -n elastic
     ```
     - Cluster with single elasticsearch node and a 50GB volume plus kibana and metricbeat containers is created 
