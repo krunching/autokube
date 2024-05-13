@@ -66,7 +66,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Run ubuntu-2404-cloudinit.sh
 
 3. Deploy the Cluster VMs with terraform and ansible
-    - Add an api token through the gui for the root user and untick priviledge seperation
+    - Add an api token through the gui for the root user and untick privilege seperation
     - Take a note of both values token id and secret
     - Enter terraform directory
     ```
