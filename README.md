@@ -131,7 +131,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ./helmRepos.sh
     ```
 
-6. Install openebs
+6. Install openebs with mayastor disabled
     ```
     helm install openebs --namespace openebs openebs/openebs --set engines.replicated.mayastor.enabled=false --create-namespace
     ```
