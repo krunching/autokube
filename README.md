@@ -158,7 +158,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     helm install metallb metallb/metallb -n metallb-system --create-namespace
     ```
-    - Enter helm directory
+    - Enter metallb directory
     ```
     cd ../metallb
     ```
