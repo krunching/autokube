@@ -44,7 +44,22 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ./brewPrerequisites.sh
     ```
 
-2. Create VM template in Proxmox and setup terraform role and user
+2. Create VM template in Proxmox
+    - Create directory /var/lib/vz/snippets on proxmox server either with the shell gui or ssh
+    ```
+    mkdir /var/lib/vz/snippets
+    ```
+    - Create file ubuntu.yaml
+    ```
+    cat << EOF | sudo tee /var/lib/vz/snippets/ubuntu.yaml
+    #cloud-config
+    runcmd:
+        - apt update
+        - apt install -y qemu-guest-agent
+        - reboot
+    # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
+    EOF
+    ```
     - Enter proxmox directory
     ```
     cd ../proxmox
@@ -65,7 +80,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Write changes and exit editor
     - Run ubuntu-2404-cloudinit.sh
 
-3. Deploy the Cluster VMs with terraform and ansible
+4. Deploy the Cluster VMs with terraform and ansible
     - Add an api token through the gui for the root user and untick privilege seperation
     - Take a note of both values token id and secret
     - Enter terraform directory
@@ -105,7 +120,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
        terraform destroy
        ```
 
-4. Prepare your client to interact with the Kubernetes Cluster
+5. Prepare your client to interact with the Kubernetes Cluster
     - Use scp to copy the config file from kubernetes master to folder .kube in your home directory
     ```
     cd ~
@@ -125,13 +140,13 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     watch kubectl get pods -o wide -A
     ```
 
-5. Add Helm Repos
+6. Add Helm Repos
     ```
     cd ../helm
     ./helmRepos.sh
     ```
 
-6. Install openebs with mayastor disabled
+7. Install openebs with mayastor disabled
     ```
     helm install openebs --namespace openebs openebs/openebs --set engines.replicated.mayastor.enabled=false --create-namespace
     ```
@@ -154,7 +169,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl delete -f dbench.yaml
     ```
 
-7. Install metallb
+8. Install metallb
     ```
     helm install metallb metallb/metallb -n metallb-system --create-namespace
     ```
@@ -178,7 +193,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl create -f L2Advertisement.yaml
     ```
 
-8. Install traefik
+9. Install traefik
     - Customize values.yaml in traefik folder to your needs
     - Set your domain as matchRule for the dashboard ingressroute (starting in line 157)
     - In case you do not own a domain, disable the ingressroute by setting enabled to false
@@ -261,7 +276,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080
     ```
     
-9. Install elastic
+10. Install elastic
     - Install eck operator
     ```
     helm install elastic-operator elastic/eck-operator -n elastic-system --create-namespace
