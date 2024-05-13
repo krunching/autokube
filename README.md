@@ -12,7 +12,7 @@ You can experiment with different storage solutions, as requirements for rook, l
 
 Make sure you have sufficent storage on your proxmox cluster. Best use thin-provisioned datastore.
 
-Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be resetted through the proxmox gui. The deployment automatically continues when the machine is up again. 
+Tip: If your terraform deployment does not finish, a provisioned machine might have memory deadlock and needs to be reset through the proxmox gui. The deployment automatically continues when the machine is up again. 
 
 ---
 
