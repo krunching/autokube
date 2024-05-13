@@ -192,7 +192,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
         # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
         labels: {}
         # -- The router match rule used for the dashboard ingressRoute
-        matchRule: Host(`<traefik.youdomain.xyz>`)
+        matchRule: Host(`<traefik.yourdomain.xyz>`)
         # -- Specify the allowed entrypoints to use for the dashboard ingress route, (e.g. traefik, web, websecure).
         # By default, it's using traefik entrypoint, which is not exposed.
         # /!\ Do not expose your dashboard without any protection over the internet /!\
