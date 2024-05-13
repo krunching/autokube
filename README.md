@@ -158,7 +158,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     helm install metallb metallb/metallb -n metallb-system --create-namespace
     ```
-    - edit the pool.yaml to your network addresses and create ip pool
+    - edit the pool.yaml matching your network addresses and create ip pool
     ```
     apiVersion: metallb.io/v1beta1
     kind: IPAddressPool
