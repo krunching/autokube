@@ -163,7 +163,7 @@ ingressRoute:
     # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
     labels: {}
     # -- The router match rule used for the dashboard ingressRoute
-    matchRule: Host(`traefik.krunching.de`)
+    matchRule: Host(`<traefik.yourdomain.xyz>`)
     # -- Specify the allowed entrypoints to use for the dashboard ingress route, (e.g. traefik, web, websecure).
     # By default, it's using traefik entrypoint, which is not exposed.
     # /!\ Do not expose your dashboard without any protection over the internet /!\
@@ -582,7 +582,7 @@ additionalArguments:
 #  - "--providers.kubernetescrd"
   - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
   - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-  - "--certificatesresolvers.myresolver.acme.email=malte.krause@krunching.de"
+  - "--certificatesresolvers.myresolver.acme.email=<your.email@yourdomain.xyz>"
   - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
   - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
 #  - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"

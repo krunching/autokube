@@ -10,7 +10,7 @@ spec:
     - websecure
 
   routes:
-    - match: Host(`kibana.krunching.de`)
+    - match: Host(`<kibana.yourdomain.xyz>`)
       kind: Rule
       services:
         - name: kibana-kb-http

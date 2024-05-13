@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Change Parameters matching your environment 
-STORAGE="external-lvm"
-SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOhdd4M03kGHIoHsYOL/htqHnCQ67gQ8bMGil9rupLrn malte.krause@krunching.de"
-TF_USERPASS="terraform"
+STORAGE="<your_proxmox_storage_name>"
+SSH_KEY="<your_ssh_key>"
+TF_USERPASS="<your_password_for_terraform_user>"
 
 set -x
 wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
