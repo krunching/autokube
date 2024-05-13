@@ -279,7 +279,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Optionally edit file metricbeat_hosts (adapted from https://github.com/elastic/cloud-on-k8s/tree/main/config/recipes/beats)
     - Deploy elastic cluster with metricbeat
     ```
-    cd elastic
+    cd ../elastic
     kubectl create -f metricbeat_hosts.yaml -n elastic
     ```
     - Cluster with single elasticsearch node and a 50GB volume plus kibana and metricbeat containers is created 
