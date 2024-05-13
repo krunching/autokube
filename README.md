@@ -109,6 +109,7 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Use scp to copy the config file from kubernetes master to folder .kube in your home directory
     ```
     cd ~
+    mkdir .kube
     scp ubuntu@kubemaster-1:~/.kube/config ~/.kube/
     ```
     - Fix permissions on config file
