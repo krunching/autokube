@@ -54,7 +54,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     # Change Parameters matching your environment 
     STORAGE="<your_proxmox_storage_name>"
     SSH_KEY="<your_ssh_key>"
-    TF_USERPASS="<your_password_for_terraform_user>"
     ```
     - Use scp to copy script to home directory of root on proxmox server
     - Connect via ssh to your proxmox server and run the script
@@ -67,8 +66,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     - Run ubuntu-2404-cloudinit.sh
 
 3. Deploy the Cluster VMs with terraform and ansible
-    - Add an api token through the gui for the newly created terraform-prov user
-    - Add permissions to the api token in the gui on the by selecting path /, then the api token itself and the terraformProv role
+    - Add an api token through the gui for the root user and untick priviledge seperation
+    - Take a note of both values token id and secret
     - Enter terraform directory
     ```
     cd ../terraform
