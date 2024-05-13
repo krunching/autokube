@@ -158,6 +158,10 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
     helm install metallb metallb/metallb -n metallb-system --create-namespace
     ```
+    - Enter helm directory
+    ```
+    cd ../metallb
+    ```
     - edit the pool.yaml matching your network addresses and create ip pool
     ```
     apiVersion: metallb.io/v1beta1
@@ -170,7 +174,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
        - <your_pool_start_ip>-<your_pool_end_ip>
     ```
     ```
-    cd ../metallb
     kubectl create -f pool.yaml
     ```
     - Create layer 2 advertisment
