@@ -45,21 +45,6 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     ```
 
 2. Create VM template in Proxmox
-    - Create directory /var/lib/vz/snippets on proxmox server either with the shell gui or ssh
-    ```
-    mkdir /var/lib/vz/snippets
-    ```
-    - Create file ubuntu.yaml
-    ```
-    cat << EOF | sudo tee /var/lib/vz/snippets/ubuntu.yaml
-    #cloud-config
-    runcmd:
-        - apt update
-        - apt install -y qemu-guest-agent
-        - reboot
-    # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
-    EOF
-    ```
     - Enter proxmox directory
     ```
     cd ../proxmox
