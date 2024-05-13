@@ -262,9 +262,9 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
       users: <your_token_here>    
     EOF
     ```
-    - If you did not expose the traefik dashboard to the internet, use kubernetes port forwarding and access dashboard at http://127.0.0.1:8080/dashboard/
+    - If you did not expose the traefik dashboard to the internet, use kubernetes port forwarding and access dashboard at http://127.0.0.1:9000/dashboard/
     ```
-    kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080
+    kubectl -n traefik port-forward $(kubectl -n traefik get pods --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
     ```
     
 11. Install elastic
