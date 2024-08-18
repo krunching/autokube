@@ -83,6 +83,8 @@ Tip: If your terraform deployment does not finish, a provisioned machine might h
     master_count = 1
     worker_count = 3
     storage_size = 250
+    storage = "<your_storage_name>"
+    bridge = "<your_bridge_name>"
     ```
     - Change vm specs according to your needs
     - Ansible playbooks get called by the terraform process and setup the cluster
