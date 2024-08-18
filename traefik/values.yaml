@@ -71,16 +71,16 @@ deployment:
   initContainers:
   # The "volume-permissions" init container is required if you run into permission issues.
   # Related issue: https://github.com/traefik/traefik-helm-chart/issues/396
-   - name: volume-permissions
-     image: busybox:latest
-     command: ["sh", "-c", "touch /data/acme.json; chmod -v 600 /data/acme.json"]
-     securityContext:
-       runAsNonRoot: true
-       runAsGroup: 65532
-       runAsUser: 65532
-     volumeMounts:
-       - name: data
-         mountPath: /data
+  # - name: volume-permissions
+  #   image: busybox:latest
+  #   command: ["sh", "-c", "touch /data/acme.json; chmod -v 600 /data/acme.json"]
+  #   securityContext:
+  #     runAsNonRoot: true
+  #     runAsGroup: 65532
+  #     runAsUser: 65532
+  #   volumeMounts:
+  #     - name: data
+  #       mountPath: /data
   # -- Use process namespace sharing
   shareProcessNamespace: false
   # -- Custom pod DNS policy. Apply if `hostNetwork: true`
@@ -989,22 +989,22 @@ priorityClassName: ""
 securityContext:
   capabilities:
     drop: [ALL]
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
 
 podSecurityContext:
   # /!\ When setting fsGroup, Kubernetes will recursively change ownership and
   # permissions for the contents of each volume to match the fsGroup. This can
   # be an issue when storing sensitive content like TLS Certificates /!\
-  fsGroup: 65532
+  #fsGroup: 65532
   # -- Specifies the policy for changing ownership and permissions of volume contents to match the fsGroup.
-  fsGroupChangePolicy: "OnRootMismatch"
+  #fsGroupChangePolicy: "OnRootMismatch"
   # -- The ID of the group for all containers in the pod to run as.
-  runAsGroup: 65532
+  #runAsGroup: 65532
   # -- Specifies whether the containers should run as a non-root user.
-  runAsNonRoot: true
+  #runAsNonRoot: true
   # -- The ID of the user for all containers in the pod to run as.
-  runAsUser: 65532
+  #runAsUser: 65532
 
 #
 # -- Extra objects to deploy (value evaluated as a template)

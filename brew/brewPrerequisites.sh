@@ -1,3 +1,5 @@
 #! /bin/bash
+brew tap hashicorp/tap
 brew update
-brew install kubectl watch terraform ansible helm
+brew install hashicorp/tap/terraform
+brew install kubectl watch ansible helm

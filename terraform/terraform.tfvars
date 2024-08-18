@@ -7,3 +7,5 @@ ssh_key = "<your_ssh_key>"
 master_count = 1
 worker_count = 3
 storage_size = 250
+storage = "<your_storage_name>"
+bridge = "<your_bridge_name>"

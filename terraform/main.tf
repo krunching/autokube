@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.1-rc1"
+      version = "3.0.1-rc3"
     }
   }
 }
@@ -17,31 +17,6 @@ provider "proxmox" {
   pm_tls_insecure = true
 }
 
-variable "cloudinit_template_name" {
-  type = string
-}
-
-variable "proxmox_node" {
-  type = string
-}
-
-variable "ssh_key" {
-  type      = string
-  sensitive = true
-}
-
-variable "master_count" {
-  type = number
-}
-
-variable "worker_count" {
-  type = number
-}
-
-variable "storage_size" {
-  type = number
-}
-
 resource "proxmox_vm_qemu" "kubemaster" {
   count = var.master_count
   name = "kubemaster-${count.index + 1}"
@@ -54,9 +29,9 @@ resource "proxmox_vm_qemu" "kubemaster" {
   clone = var.cloudinit_template_name
 
   # basic VM settings here. agent refers to guest agent
-  tags = "cloud-init;kubemaster;noble"  
+  tags = "cloudinit;kubemaster;noble"
   agent = 1
-  balloon =1
+  balloon = 1
   os_type = "cloud-init"
   cicustom = "vendor=local:snippets/ubuntu.yaml"
   ipconfig0 = "ip=dhcp"
@@ -65,31 +40,38 @@ resource "proxmox_vm_qemu" "kubemaster" {
   cores = 2
   sockets = 1
   cpu = "x86-64-v2-AES"
-  memory = 2048
+  memory = 4096
   scsihw = "virtio-scsi-pci"
   #bootdisk = "scsi0"
-  cloudinit_cdrom_storage = "external-lvm"
- 
+   
   disks {
       scsi {
         scsi0 {
           disk {
-            storage = "external-lvm"
+            storage = var.storage
             size = 20
             emulatessd = true
             iothread = false
             discard = true
             backup = true
             replicate = true
+           }
+        }
+      }
+      ide {
+        ide3 {
+          cloudinit { 
+            storage = var.storage
           }
         }
       }
     }
 
+
   # if you want two NICs, just copy this whole network section and duplicate it
   network {
     model = "virtio"
-    bridge = "vmbr0"
+    bridge = var.bridge
   }
 
   lifecycle {
@@ -111,7 +93,7 @@ resource "proxmox_vm_qemu" "kubeworker" {
   clone = var.cloudinit_template_name
 
   # basic VM settings here. agent refers to guest agent
-  tags = "cloud-init;kubeworker;noble"
+  tags = "cloudinit;kubeworker;noble"
   agent = 1
   balloon = 1
   os_type = "cloud-init"
@@ -125,13 +107,12 @@ resource "proxmox_vm_qemu" "kubeworker" {
   memory = 8192
   scsihw = "virtio-scsi-pci"
   #bootdisk = "scsi0"
-  cloudinit_cdrom_storage = "external-lvm"
-
-disks {
+  
+  disks {
       scsi {
         scsi0 {
           disk {
-            storage = "external-lvm"
+            storage = var.storage
             size = 20
             emulatessd = true
             iothread = false
@@ -142,7 +123,7 @@ disks {
         }
       scsi1 {
           disk {
-            storage = "external-lvm"
+            storage = var.storage
             size = var.storage_size
             emulatessd = true
             iothread = false
@@ -152,12 +133,19 @@ disks {
           }
         }      
       }
+      ide {
+        ide3 {
+          cloudinit { 
+            storage = var.storage
+          }
+        }
+      }
     }
  
 # if you want two NICs, just copy this whole network section and duplicate it
  network {
    model = "virtio"
-   bridge = "vmbr0"
+   bridge = var.bridge
  }
 
  lifecycle {
